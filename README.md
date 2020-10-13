@@ -17,3 +17,7 @@ Para o cenário proposto foi escolhida a arquitetura utilizando a funcionalidade
 | Não persistente                                                                      	| Persistente                                                                                                               	|
 | Modelo fire & forget. Para receber a mensagem o  recebedor precisa estar executando. 	| Os consumers não precisam estar rodando quando a mensagem chega. Podem consumir as mensagens assim que estiver operando.  	|
 | Todos os subscribers recebem a mesma mensagem                                        	| Somente um consumer dentro de consumer group receberá a mensagem. Evitando assim o processamento de mensagens duplicadas. 	|
+
+### Solicitar Pagamento
+
+![](./doc/request_payment.png)
