@@ -109,7 +109,7 @@ Esse repositório possui dois projetos springboot:
   
   `cd ..`
   
-  Inicializa o consumer
+  Inicializa o consumer com duas instâncias
   
-  `docker-compose up consumer`
+  `docker-compose up --scale consumer=2`
   
