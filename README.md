@@ -87,7 +87,11 @@ Esse repositório possui dois projetos springboot:
   
   `docker-compose up producer`
   
-    ### Execução do Consumer
+  Documentação da API
+  
+  `http://localhost:8080/swagger-ui.html`
+  
+  ### Execução do Consumer
   
   Acesse a pasta do projeto
 
