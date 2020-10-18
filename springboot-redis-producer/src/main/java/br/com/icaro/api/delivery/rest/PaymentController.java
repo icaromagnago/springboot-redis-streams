@@ -17,6 +17,7 @@ import br.com.icaro.api.dto.PaymentInput;
 import br.com.icaro.api.repository.CancelPaymentRepository;
 import br.com.icaro.api.repository.RequestPaymentRepository;
 import br.com.icaro.api.repository.entity.CancelPaymentEntity;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/payments")
@@ -28,6 +29,7 @@ public class PaymentController {
 	@Autowired
 	private CancelPaymentRepository cancelPaymentRepository;
 	
+	@ApiOperation("Solicita um novo pagamento")
 	@PostMapping
 	public ResponseEntity<String> requestPayment(@RequestBody @Valid PaymentInput paymentInput) {
 		requestPaymentRepository.publishEvent(paymentInput);
@@ -35,6 +37,7 @@ public class PaymentController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@ApiOperation("Solicita o cancelamento de um pagamento por PATH")
 	@PutMapping("/{paymentId}/cancel")
 	public ResponseEntity<String> cancelPayment(@PathVariable String paymentId, 
 			@RequestBody CancelPayment cancelPayment) {
@@ -48,10 +51,24 @@ public class PaymentController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@ApiOperation("Solicita o cancelamento de um pagamento por PARAM")
 	@PutMapping("/cancel")
 	public ResponseEntity<String> cancelPayment2(@RequestParam String paymentId, 
 			@RequestBody CancelPayment cancelPayment) {
 		
+		var cancelPaymentEntity = new CancelPaymentEntity(paymentId, cancelPayment.getAmount(), 
+				cancelPayment.getCredential().getClientId(), 
+				cancelPayment.getCredential().getClientSecret());
+		
+		cancelPaymentRepository.publishEvent(cancelPaymentEntity);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	@ApiOperation("Solicita o cancelamento de um pagamento por HEADER")
+	@PutMapping(value = "/{paymentId}", headers = "X-API-CANCEL=true")
+	public ResponseEntity<String> cancelPayment3(@PathVariable String paymentId, 
+			@RequestBody CancelPayment cancelPayment) {
 		var cancelPaymentEntity = new CancelPaymentEntity(paymentId, cancelPayment.getAmount(), 
 				cancelPayment.getCredential().getClientId(), 
 				cancelPayment.getCredential().getClientSecret());

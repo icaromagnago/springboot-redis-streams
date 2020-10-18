@@ -13,3 +13,17 @@ services:
       - REDIS_HOSTS=redis:redis
     ports:
       - 8081:8081
+  
+  producer:
+    image: icaro/redis-producer
+    depends_on:
+     - redis
+    environment:
+      - SPRING_REDIS_HOST=redis
+
+  consumer:
+    image: icaro/redis-consumer
+    depends_on:
+     - redis
+    environment:
+      - SPRING_REDIS_HOST=redis
