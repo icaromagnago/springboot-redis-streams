@@ -1,9 +1,9 @@
-package br.com.icaro.api.dto;
+package br.com.icaro.api.repository.entity;
 
 import lombok.Data;
 
 @Data
-public class CancelPayment {
+public class CancelPaymentEntity {
 	
 	private final String paymentId;
 	

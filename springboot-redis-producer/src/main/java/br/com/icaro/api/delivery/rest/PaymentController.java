@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.icaro.api.dto.CancelPayment;
 import br.com.icaro.api.dto.PaymentInput;
 import br.com.icaro.api.repository.CancelPaymentRepository;
 import br.com.icaro.api.repository.RequestPaymentRepository;
+import br.com.icaro.api.repository.entity.CancelPaymentEntity;
 
 @RestController
 @RequestMapping("/payments")
@@ -36,16 +38,26 @@ public class PaymentController {
 	@PutMapping("/{paymentId}/cancel")
 	public ResponseEntity<String> cancelPayment(@PathVariable String paymentId, 
 			@RequestBody CancelPayment cancelPayment) {
-		cancelPaymentRepository.publishEvent(cancelPayment);
+		
+		var cancelPaymentEntity = new CancelPaymentEntity(paymentId, cancelPayment.getAmount(), 
+				cancelPayment.getCredential().getClientId(), 
+				cancelPayment.getCredential().getClientSecret());
+		
+		cancelPaymentRepository.publishEvent(cancelPaymentEntity);
 		
 		return ResponseEntity.ok().build();
 	}
 	
-//	@PutMapping("/cancel")
-//	public ResponseEntity<String> cancelPayment2(@RequestParam String paymentId, 
-//			@RequestBody CancelPayment cancelPayment) {
-//		cancelPaymentRepository.publishEvent(cancelPayment);
-//		
-//		return ResponseEntity.ok().build();
-//	}
+	@PutMapping("/cancel")
+	public ResponseEntity<String> cancelPayment2(@RequestParam String paymentId, 
+			@RequestBody CancelPayment cancelPayment) {
+		
+		var cancelPaymentEntity = new CancelPaymentEntity(paymentId, cancelPayment.getAmount(), 
+				cancelPayment.getCredential().getClientId(), 
+				cancelPayment.getCredential().getClientSecret());
+		
+		cancelPaymentRepository.publishEvent(cancelPaymentEntity);
+		
+		return ResponseEntity.ok().build();
+	}
 }
