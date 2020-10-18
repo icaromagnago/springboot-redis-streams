@@ -31,6 +31,12 @@ Para o cenário proposto foi escolhida a arquitetura utilizando a funcionalidade
 
 - O `cancelar pagamento` segue a mesma arquitetura do `solicitar pagamento`
 
+## Estrutura do projeto
+
+Esse repositório possui dois projetos springboot:
+- `springboot-redis-producer`: Essa é a API e recebe as requisições externas, a API armazena as mensagens no redis-stream
+- `springboot-redis-consumer`: Consome as mensagens e chama a API externa da ADIQ, o retorno é armazenado novamente no redis-stream
+
 ## Execução com Docker
 
 - Prerequisitos
