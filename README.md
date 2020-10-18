@@ -31,3 +31,81 @@ Para o cenário proposto foi escolhida a arquitetura utilizando a funcionalidade
 
 - O `cancelar pagamento` segue a mesma arquitetura do `solicitar pagamento`
 
+## Estrutura do projeto
+
+Esse repositório possui dois projetos springboot:
+- `springboot-redis-producer`: Essa é a API e recebe as requisições externas, a API armazena as mensagens no redis-stream
+- `springboot-redis-consumer`: Consome as mensagens e chama a API externa da ADIQ, o retorno é armazenado novamente no redis-stream
+
+## Execução com Docker
+
+- Prerequisitos
+
+  - `Java JDK 11`
+  - `Docker`
+  - `Docker Compose`
+  
+  ### Execução do redis e redis-commander
+  
+  Acesse a pasta do projeto
+  
+  `cd springboot-redis-streams`
+  
+  execute:
+  
+  `docker-compose up redis redis-commander`
+  
+  Acesse a instância do redis no navegador
+  
+  `http://localhost:8081`
+  
+  Criando os consumers-group que vamos utilizar, execute no console do redis-commander:
+  
+  `XGROUP CREATE request_payment_stream request_payment_stream $ MKSTREAM`
+  
+  `XGROUP CREATE cancel_payment_stream cancel_payment_stream $ MKSTREAM`
+  
+  ### Execução do Producer
+  
+  Acesse a pasta do projeto
+
+  `cd springboot-redis-streams/springboot-redis-producer`
+  
+  Execute o maven para buildar o projeto
+
+  `mvn clean install`
+
+  Execute o build do Dockerfile
+
+  `docker build -t icaro/redis-producer .`
+  
+  Navegue para a raiz do projeto
+  
+  `cd ..`
+  
+  Inicializa o producer
+  
+  `docker-compose up producer`
+  
+    ### Execução do Consumer
+  
+  Acesse a pasta do projeto
+
+  `cd springboot-redis-streams/springboot-redis-consumer`
+  
+  Execute o maven para buildar o projeto
+
+  `mvn clean install`
+
+  Execute o build do Dockerfile
+
+  `docker build -t icaro/redis-consumer .`
+  
+  Navegue para a raiz do projeto
+  
+  `cd ..`
+  
+  Inicializa o consumer
+  
+  `docker-compose up consumer`
+  
