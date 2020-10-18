@@ -20,6 +20,8 @@ services:
      - redis
     environment:
       - SPRING_REDIS_HOST=redis
+    ports:
+     - 8080:8080
 
   consumer:
     image: icaro/redis-consumer
@@ -27,3 +29,5 @@ services:
      - redis
     environment:
       - SPRING_REDIS_HOST=redis
+    ports:
+     - 8082-8090:8082

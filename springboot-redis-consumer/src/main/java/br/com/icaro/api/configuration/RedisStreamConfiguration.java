@@ -17,8 +17,8 @@ import org.springframework.data.redis.stream.StreamListener;
 import org.springframework.data.redis.stream.StreamMessageListenerContainer;
 import org.springframework.data.redis.stream.Subscription;
 
-import br.com.icaro.api.dto.CancelPayment;
 import br.com.icaro.api.dto.PaymentInput;
+import br.com.icaro.api.repository.entity.CancelPaymentEntity;
 
 @Configuration
 public class RedisStreamConfiguration {
@@ -33,7 +33,7 @@ public class RedisStreamConfiguration {
 	private StreamListener<String, ObjectRecord<String, PaymentInput>> requestPaymentListener;
 	
 	@Autowired
-	private StreamListener<String, ObjectRecord<String, CancelPayment>> cancelPaymentListener;
+	private StreamListener<String, ObjectRecord<String, CancelPaymentEntity>> cancelPaymentListener;
 	
 	@Bean
 	public Subscription requestPaymentSubscription(RedisConnectionFactory redisConnectionFactory) throws UnknownHostException {
@@ -65,7 +65,7 @@ public class RedisStreamConfiguration {
 				.StreamMessageListenerContainerOptions
 				.builder()
 				.pollTimeout(Duration.ofSeconds(1))
-				.targetType(CancelPayment.class)
+				.targetType(CancelPaymentEntity.class)
 				.build();
 		
 		var listenerContainer = StreamMessageListenerContainer
@@ -80,5 +80,4 @@ public class RedisStreamConfiguration {
 		
 		return subscription;
 	}
-	
 }

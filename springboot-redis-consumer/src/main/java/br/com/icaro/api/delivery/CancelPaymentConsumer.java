@@ -8,13 +8,13 @@ import org.springframework.data.redis.connection.stream.ObjectRecord;
 import org.springframework.data.redis.stream.StreamListener;
 import org.springframework.stereotype.Service;
 
-import br.com.icaro.api.dto.CancelPayment;
 import br.com.icaro.api.gateway.AdiqClient;
 import br.com.icaro.api.gateway.dto.CancelPaymentRequest;
 import br.com.icaro.api.repository.CancelAuthorizationRepository;
+import br.com.icaro.api.repository.entity.CancelPaymentEntity;
 
 @Service
-public class CancelPaymentConsumer implements StreamListener<String, ObjectRecord<String, CancelPayment>> {
+public class CancelPaymentConsumer implements StreamListener<String, ObjectRecord<String, CancelPaymentEntity>> {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CancelPaymentConsumer.class);
 	
@@ -26,7 +26,7 @@ public class CancelPaymentConsumer implements StreamListener<String, ObjectRecor
 	private CancelAuthorizationRepository cancelAuthorizationRepo;
 	
 	@Override
-	public void onMessage(ObjectRecord<String, CancelPayment> record) {
+	public void onMessage(ObjectRecord<String, CancelPaymentEntity> record) {
 		var cancelPaymentRecord = record.getValue();
 		
 		LOGGER.info("Mensagem consumida: "+ cancelPaymentRecord);
